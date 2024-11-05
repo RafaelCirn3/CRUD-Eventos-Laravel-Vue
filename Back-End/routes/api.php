@@ -11,6 +11,15 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // Rota de Registro
 Route::post('/register', [AuthController::class, 'register'])->name('register');
+
+// Rota para se inscrever em um evento
+Route::middleware('auth:sanctum')->post('/events/{id}/subscribe', [EventController::class, 'subscribe']);
+
+    
+// Rota para cancelar a inscrição em um evento
+Route::middleware('auth:sanctum')->post('/events/{id}/unsubscribe', [EventController::class, 'unsubscribe']);
+
+
 // Rotas protegidas
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
