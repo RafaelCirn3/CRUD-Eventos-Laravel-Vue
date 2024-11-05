@@ -20,8 +20,10 @@ Route::middleware('auth:sanctum')->post('/events/{id}/subscribe', [EventControll
 Route::middleware('auth:sanctum')->post('/events/{id}/unsubscribe', [EventController::class, 'unsubscribe']);
 
 
+// api.php
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
 // Rotas protegidas
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('events', EventController::class);
 });
