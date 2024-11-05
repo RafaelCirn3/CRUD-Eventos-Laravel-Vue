@@ -74,40 +74,44 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Event $event)
-    {
-        // Valida os dados
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'cover_image' => 'nullable|image',
-            'banner_image' => 'nullable|image',
-            'date' => 'required|date',
-        ]);
-
-        // Atualiza o evento
-        $event->update($data);
-        return response()->json($event, 200);
+{
+    // Verifica se o usuário autenticado é o criador do evento
+    if ($event->user_id !== Auth::id()) {
+        return response()->json(['error' => 'Unauthorized'], 403);
     }
 
-    /**
-     * Remove the specified resource from storage (Delete).
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Valida os dados
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'required|string',
+        'cover_image' => 'nullable|image',
+        'banner_image' => 'nullable|image',
+        'date' => 'required|date',
+    ]);
+
+    // Atualiza o evento
+    $event->update($data);
+    return response()->json($event, 200);
+}
+
     public function destroy($id)
-    {
-        // Localiza o evento para excluir
-        $event = Event::find($id);
+{
+    // Localiza o evento para excluir
+    $event = Event::find($id);
 
-        if (!$event) {
-            return response()->json(['error' => 'Event not found'], 404);
-        }
-
-        // Exclui o evento
-        $event->delete();
-        return response()->json(['message' => 'Event deleted successfully'], 200);
+    if (!$event) {
+        return response()->json(['error' => 'Event not found'], 404);
     }
+
+    // Verifica se o usuário autenticado é o criador do evento
+    if ($event->user_id !== Auth::id()) {
+        return response()->json(['error' => 'Unauthorized'], 403);
+    }
+
+    // Exclui o evento
+    $event->delete();
+    return response()->json(['message' => 'Event deleted successfully'], 200);
+}
     public function subscribe($id){
         $event = Event::find($id);
         if (!$event) {
