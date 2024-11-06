@@ -154,4 +154,45 @@ class EventController extends Controller
         
             return response()->json(['message' => 'Unsubscribed successfully'], 200);
         }
+        public function myEvents()
+        {
+            $user = Auth::user();
+    
+            // Buscar eventos criados pelo usuário logado
+            $events = Event::where('user_id', $user->id)->get();
+    
+            return response()->json($events, 200);
+        }
+    
+        /**
+         * Display events the logged-in user is subscribed to.
+         *
+         * @return \Illuminate\Http\Response
+         */
+        public function subscribedEvents()
+        {
+            $user = Auth::user();
+    
+            // Buscar os eventos nos quais o usuário está inscrito
+            $events = $user->events; // Relação definida no modelo User
+    
+            return response()->json($events, 200);
+        }
+    
+        /**
+         * Display available events the user can subscribe to.
+         *
+         * @return \Illuminate\Http\Response
+         */
+        public function availableEvents()
+        {
+            $user = Auth::user();
+    
+            // Buscar eventos que o usuário não criou e não está inscrito
+            $events = Event::whereDoesntHave('users', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->where('user_id', '!=', $user->id)->get();
+    
+            return response()->json($events, 200);
+        }
 }

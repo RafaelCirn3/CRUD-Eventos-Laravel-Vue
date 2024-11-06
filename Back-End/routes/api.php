@@ -1,10 +1,8 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
+use Illuminate\Support\Facades\Route;
 
 // Rota de Login
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -12,18 +10,27 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 // Rota de Registro
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
-// Rota para se inscrever em um evento
-Route::middleware('auth:sanctum')->post('/events/{id}/subscribe', [EventController::class, 'subscribe']);
-
-    
-// Rota para cancelar a inscrição em um evento
-Route::middleware('auth:sanctum')->post('/events/{id}/unsubscribe', [EventController::class, 'unsubscribe']);
-
-
-// api.php
+// Logout
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
-// Rotas protegidas
+// Rota para inscrição em evento
+Route::middleware('auth:sanctum')->post('/event/{id}/subscribe', [EventController::class, 'subscribe']);
+
+// Rota para cancelar inscrição em evento
+Route::middleware('auth:sanctum')->post('/event/{id}/unsubscribe', [EventController::class, 'unsubscribe']);
+
+// Evento criado pelo usuário logado
+Route::middleware('auth:sanctum')->get('/my-events', [EventController::class, 'MyEvents']);
+
+// Evento no qual o usuário está inscrito
+Route::middleware('auth:sanctum')->get('/subscribed-event', [EventController::class, 'subscribedEvents']);
+
+// Rotas protegidas com autenticação (necessário token)
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('events', EventController::class);
+    // Evento disponível para inscrição
+    Route::get('/available-event', [EventController::class, 'availableEvents']);
+    
+    // Outras rotas para eventos
+    Route::apiResource('event', EventController::class);
 });
+
