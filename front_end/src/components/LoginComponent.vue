@@ -63,11 +63,11 @@ export default {
 
                     // Verificando se a rota atual é diferente da rota de destino
                     const currentRoute = this.$route.name;
-                    const targetRoute = 'event-list';  // Nome da rota de destino
+                    const targetRoute = 'events';  // Nome da rota de destino
 
                     // Se a rota atual for diferente, redireciona para a lista de eventos
                     if (currentRoute !== targetRoute) {
-                        this.$router.push('/event-list'); // Redireciona para a página de lista de eventos
+                        this.$router.push('/events/create'); // Redireciona para a página de lista de eventos
                     }
                 }
             } catch (error) {

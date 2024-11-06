@@ -2,9 +2,10 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import LoginComponent from './components/LoginComponent.vue';
 import RegisterComponent from './components/RegisterComponent.vue';
-import EventListComponent from './components/EventListComponent.vue';
 import EventFormComponent from './components/EventFormComponent.vue';
-import EventDetailComponent from './components/EventDetailComponent.vue';
+import MyEventsComponent from './components/MyEventsComponent.vue';  // Rota para eventos criados pelo usuário
+import SubscribedEventsComponent from './components/SubscribedEventsComponent.vue';  // Rota para eventos aos quais o usuário está inscrito
+import AvailableEventsComponent from './components/AvailableEventsComponent.vue'; // Rota para eventos disponíveis para inscrição
 
 Vue.use(Router);
 
@@ -26,25 +27,29 @@ export default new Router({
             component: RegisterComponent,
         },
         {
-            path: '/events',
-            name: 'Events',
-            component: EventListComponent,
-        },
-        {
             path: '/events/create',
             name: 'CreateEvent',
             component: EventFormComponent,
         },
         {
-            path: '/events/:id/edit',
+            path: '/event/:id/edit',
             name: 'EditEvent',
             component: EventFormComponent,
         },
         {
-            path: '/events/:id',
-            name: 'EventDetail',  // Rota para exibir detalhes do evento
-            component: EventDetailComponent,
-            props: true  // Permite passar o id como prop para o componente
+            path: '/my-events',
+            name: 'MyEvents',
+            component: MyEventsComponent,  // Exibe eventos criados pelo usuário
+        },
+        {
+            path: '/events/subscribed',
+            name: 'SubscribedEvents',
+            component: SubscribedEventsComponent,  // Exibe eventos aos quais o usuário está inscrito
+        },
+        {
+            path: '/events/available',
+            name: 'AvailableEvents',
+            component: AvailableEventsComponent,  // Exibe eventos disponíveis para inscrição
         }
     ]
 });
