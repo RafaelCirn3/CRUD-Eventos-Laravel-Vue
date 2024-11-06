@@ -1,12 +1,14 @@
 <template>
-  <!--mudando o nome do site-->
-  
-  <div id="app" class="flex flex-col items-center justify-center min-h-screen bg-gray-100 relative overflow-hidden">
-    <div class="max-w-md w-full px-4">
+  <div id="app" class="flex flex-col min-h-screen bg-gray-100 overflow-hidden">
+    <!-- Header fica no topo -->
+    <HeaderComponent />
+
+    <!-- Conteúdo principal abaixo do cabeçalho -->
+    <div class="flex-1 flex justify-center items-center px-4">
       <router-view></router-view> <!-- Renderiza as rotas aqui -->
     </div>
 
-    <!-- Botão de logoff no canto superior direito -->
+    <!-- Botão de logoff no canto inferior direito -->
     <button 
       v-if="shouldShowLogoutButton" 
       @click="logout" 
@@ -18,11 +20,14 @@
 
 <script>
 import axios from 'axios';
+import HeaderComponent from './components/HeaderComponent.vue';
 
 export default {
   name: 'App',
+  components: {
+    HeaderComponent
+  },
   created() {
-    // Define o título da aba do navegador
     document.title = "CRUD Eventos";
   },
   computed: {
@@ -45,15 +50,30 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
-/* Ajuste do estilo de overflow para prevenir scroll */
+/* Ajuste de estilo para que o conteúdo ocupe todo o espaço restante e o cabeçalho fique no topo */
 html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
 }
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.flex-1 {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
 </style>

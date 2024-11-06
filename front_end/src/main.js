@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import App from './App.vue';
 import axios from 'axios';
-import router from './router'; // Ajuste para './router/router' se o arquivo estiver em uma pasta 'router'
+import router from './router'; 
 import './assets/css/tailwind.css';
 
+Vue.prototype.$axios = axios;   // facilitador do uso do Axios
 // URL base do backend
 axios.defaults.baseURL = 'http://localhost:8000/api';
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
