@@ -1,7 +1,8 @@
 <template>
-  <div id="app" class="flex flex-col items-center justify-center h-screen bg-gray-100 relative">
-    <div class="max-w-md w-full">
-      <h1 class="text-3xl font-bold mb-4 text-center">Bem-vindo ao CRUD de Eventos</h1>
+  <!--mudando o nome do site-->
+  
+  <div id="app" class="flex flex-col items-center justify-center min-h-screen bg-gray-100 relative overflow-hidden">
+    <div class="max-w-md w-full px-4">
       <router-view></router-view> <!-- Renderiza as rotas aqui -->
     </div>
 
@@ -20,26 +21,24 @@ import axios from 'axios';
 
 export default {
   name: 'App',
+  created() {
+    // Define o título da aba do navegador
+    document.title = "CRUD Eventos";
+  },
   computed: {
     shouldShowLogoutButton() {
-      // Verifica se a rota atual não é a página de registro
       return this.$route.name !== 'Register' && this.$route.name !== 'Login';
     }
   },
   methods: {
     async logout() {
       try {
-        // Envia a requisição de logout para a API com o token no cabeçalho
         await axios.post('http://localhost:8000/api/logout', {}, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
         });
-        
-        // Limpa o token do localStorage
         localStorage.removeItem('token');
-        
-        // Redireciona para a tela de login após o logout
         this.$router.push('/login');
       } catch (error) {
         console.error('Erro ao fazer logout:', error);
@@ -49,6 +48,12 @@ export default {
 }
 </script>
 
-<style>
-/* Remover qualquer estilo desnecessário, se houver */
+<style scoped>
+/* Ajuste do estilo de overflow para prevenir scroll */
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 </style>

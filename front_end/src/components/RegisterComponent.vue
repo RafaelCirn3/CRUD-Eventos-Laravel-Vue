@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <h1 style="margin-bottom: 10px;">Cadastre Aqui</h1>
+        <h1 class="text-2xl font-semibold mb-6 text-center" style="margin-bottom: 10px;">Cadastre Aqui</h1>
         <form v-if="!isAuthenticated" @submit.prevent="registerUser">
             <input type="text" v-model="name" placeholder="Nome" required />
             <input type="email" v-model="email" placeholder="Email" required />
@@ -19,8 +19,9 @@
         
         <!-- Texto para redirecionar para a tela de login -->
         <div class="text-center mt-4">
-            <span class="text-blue-500 cursor-pointer hover:underline" @click="redirectToLogin">
-                Já possui uma conta? Ir para Login
+            <p class="mt-4 text-center"> Já possui uma conta? </p>          
+            <span class="text-blue-500 cursor-pointer hover:underline font-bold" @click="redirectToLogin">
+                Ir para Login
             </span>
         </div>
     </div>
@@ -28,6 +29,7 @@
 
 <script>
 import axios from 'axios';
+
 
 export default {
     data() {
@@ -117,6 +119,6 @@ button:hover {
 
 p {
     color: red;
-    text-align: center;
+
 }
 </style>
