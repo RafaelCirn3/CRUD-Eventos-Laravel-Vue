@@ -40,8 +40,21 @@ export default {
 </script>
 
 <style scoped>
+/* Importação da fonte do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
 nav {
     box-shadow: 0 4px 2px -2px gray;
+    font-family: 'Inter', sans-serif; /* Aplica a fonte Inter ao nav */
+}
+
+h1 {
+    font-family: 'Inter', sans-serif; /* Aplica a fonte Inter ao título */
+    font-weight: 600; /* Deixa o título em negrito */
+}
+
+ul {
+    font-family: 'Inter', sans-serif; /* Aplica a fonte Inter aos itens do menu */
 }
 
 button {
