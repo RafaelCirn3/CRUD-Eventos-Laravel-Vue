@@ -24,6 +24,11 @@ Route::middleware('auth:sanctum')->get('/my-events', [EventController::class, 'M
 
 // Evento no qual o usuário está inscrito
 Route::middleware('auth:sanctum')->get('/subscribed-event', [EventController::class, 'subscribedEvents']);
+// Rota do Evento Detalhado
+Route::middleware('auth:sanctum')->get('/event/{id}', [EventController::class, 'show']);
+
+// Verifica se o usuario é registrado
+Route::middleware('auth:sanctum')->get('/event/{id}/is-registered', [EventController::class, 'checkRegistrationStatus']);
 
 // Rotas protegidas com autenticação (necessário token)
 Route::middleware('auth:sanctum')->group(function () {

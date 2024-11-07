@@ -29,31 +29,40 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        // Valida os dados
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string', 
-            'cover' => 'nullable|string',         
-            'banner' => 'nullable|string',        
-            'map' => 'nullable|string',           
+            'description' => 'nullable|string',
+            'cover' => 'nullable|image',
+            'banner' => 'nullable|image',
+            'map' => 'nullable|image',
             'date' => 'required|date',
+        ], [
+            'name.required' => 'O nome do evento é obrigatório.',
+            'date.required' => 'A data do evento é obrigatória.',
+            'cover.image' => 'A capa precisa ser uma imagem válida.',
+            'banner.image' => 'O banner precisa ser uma imagem válida.',
+            'map.image' => 'O mapa precisa ser uma imagem válida.',
         ]);
     
-        // Adicionando o ID do usuário autenticado ao array de dados
-        $data['user_id'] = auth()->id();
+        // Adiciona o ID do usuário autenticado no array de dados
+        $data['user_id'] = auth()->user()->id;
     
-        // Cria um novo evento
+        // Processar as imagens, se houver
+        if ($request->hasFile('cover')) {
+            $data['cover'] = $request->file('cover')->store('public/images');
+        }
+        if ($request->hasFile('banner')) {
+            $data['banner'] = $request->file('banner')->store('public/images');
+        }
+        if ($request->hasFile('map')) {
+            $data['map'] = $request->file('map')->store('public/images');
+        }
+    
+        // Cria o evento com os dados validados e o user_id
         $event = Event::create($data);
     
         return response()->json($event, 201);
     }
-
-    /**
-     * Display the specified resource (View by ID).
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         // Exibe os detalhes de um evento específico

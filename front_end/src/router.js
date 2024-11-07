@@ -6,6 +6,7 @@ import EventFormComponent from './components/EventFormComponent.vue';
 import MyEventsComponent from './components/MyEventsComponent.vue';  // Rota para eventos criados pelo usuário
 import SubscribedEventsComponent from './components/SubscribedEventsComponent.vue';  // Rota para eventos aos quais o usuário está inscrito
 import AvailableEventsComponent from './components/AvailableEventsComponent.vue'; // Rota para eventos disponíveis para inscrição
+import EventDetailComponent from './components/EventDetailComponent.vue';
 
 Vue.use(Router); // função de gerenciamento de Rotas
 
@@ -50,6 +51,12 @@ export default new Router({
             path: '/events/available',
             name: 'AvailableEvents',
             component: AvailableEventsComponent, 
-        }
+        },
+        {
+            path: '/event/:id', // Define a rota dinâmica para o evento
+            name: 'eventDetail',
+            component: EventDetailComponent,
+            props: true, // Passa o ID como prop para o componente
+        },
     ]
 });

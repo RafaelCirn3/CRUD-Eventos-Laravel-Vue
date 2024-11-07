@@ -6,12 +6,19 @@
             <textarea v-model="event.description" placeholder="Descrição" class="border p-2 mb-2 w-full"
                 required></textarea>
             <input v-model="event.date" type="date" class="border p-2 mb-2 w-full" required>
+
+            <!-- Campos de upload de arquivos -->
+            <input type="file" @change="handleFileChange($event, 'cover')" class="border p-2 mb-2 w-full">
+            <input type="file" @change="handleFileChange($event, 'banner')" class="border p-2 mb-2 w-full">
+            <input type="file" @change="handleFileChange($event, 'map')" class="border p-2 mb-2 w-full">
+
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
                 {{ isEdit ? 'Atualizar Evento' : 'Criar Evento' }}
             </button>
         </form>
     </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -22,7 +29,10 @@ export default {
             event: {
                 name: '',
                 description: '',
-                date: ''
+                date: '',
+                cover: null,  // Para armazenar a imagem de capa
+                banner: null, // Para armazenar a imagem de banner
+                map: null,    // Para armazenar um arquivo de mapa (se necessário)
             },
             isEdit: false // Controla se é edição ou criação
         };
@@ -52,35 +62,68 @@ export default {
 
         // Handle de envio do formulário
         async handleSubmit() {
+            // Verifica se os campos obrigatórios estão preenchidos
+            if (!this.event.name || !this.event.date) {
+                alert('Nome e data são obrigatórios!');
+                return;
+            }
+
+            // Criação de um novo FormData para enviar os dados com arquivos
+            const formData = new FormData();
+            formData.append('name', this.event.name);
+            formData.append('description', this.event.description);
+            formData.append('date', this.event.date);
+
+            // Adiciona os arquivos ao FormData, se houver
+            if (this.event.cover) formData.append('cover', this.event.cover);
+            if (this.event.banner) formData.append('banner', this.event.banner);
+            if (this.event.map) formData.append('map', this.event.map);
+
+            // Verifica se estamos criando ou editando um evento
             if (this.isEdit) {
-                // Atualiza o evento existente
-                await this.updateEvent();
+                await this.updateEvent(formData);
             } else {
-                // Cria um novo evento
-                await this.createEvent();
+                await this.createEvent(formData);
             }
         },
 
         // Criação de um novo evento
-        async createEvent() {
+        async createEvent(formData) {
             try {
-                await axios.post('/event', this.event);
+                await axios.post('/event', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data', // Importante para envio de arquivos
+                    }
+                });
                 alert('Evento criado com sucesso!');
                 this.$router.push('/events/created'); // Redireciona para a lista de eventos
             } catch (error) {
-                console.error('Erro ao criar evento', error);
+                console.error('Erro ao criar evento', error.response.data);
+                alert('Erro ao criar evento: ' + error.response.data.message);
             }
         },
 
         // Atualização de um evento existente
-        async updateEvent() {
+        async updateEvent(formData) {
             const eventId = this.$route.params.id;
             try {
-                await axios.put(`/event/${eventId}`, this.event);
+                await axios.put(`/event/${eventId}`, formData);
                 alert('Evento atualizado com sucesso!');
                 this.$router.push('/events/created'); // Redireciona para a lista de eventos
             } catch (error) {
                 console.error('Erro ao atualizar evento', error);
+            }
+        },
+
+        // Manipula a mudança de arquivos (como capa, banner, etc.)
+        handleFileChange(event, fileType) {
+            const file = event.target.files[0];
+            if (fileType === 'cover') {
+                this.event.cover = file;
+            } else if (fileType === 'banner') {
+                this.event.banner = file;
+            } else if (fileType === 'map') {
+                this.event.map = file;
             }
         }
     }

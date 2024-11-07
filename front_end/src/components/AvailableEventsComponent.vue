@@ -21,6 +21,11 @@
                     >
                         Inscrever-se
                     </button>
+                    
+                    <!-- Botão "Ver Mais" -->
+                    <router-link :to="'/event/' + event.id" class="mt-2 text-blue-500 hover:underline">
+                        Ver Mais
+                    </router-link>
                 </li>
             </ul>
         </div>

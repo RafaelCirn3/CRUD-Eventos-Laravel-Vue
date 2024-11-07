@@ -19,6 +19,9 @@
                         class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600">
                         Deletar
                     </button>
+                    <router-link :to="'/event/' + event.id" class="mt-2 text-blue-500 hover:underline">
+                        Ver Mais
+                    </router-link>
                 </div>
             </div>
         </div>
