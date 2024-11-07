@@ -4,11 +4,11 @@ import axios from 'axios';
 import router from './router'; 
 import './assets/css/tailwind.css';
 
-Vue.prototype.$axios = axios;   // facilitador do uso do Axios
+
 // URL base do backend
 axios.defaults.baseURL = 'http://localhost:8000/api';
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-
+Vue.prototype.$axios = axios;   // facilitador do uso do Axios
 new Vue({
     router,
     render: h => h(App),

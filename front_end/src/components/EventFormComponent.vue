@@ -30,11 +30,11 @@ export default {
                 name: '',
                 description: '',
                 date: '',
-                cover: null,  // Para armazenar a imagem de capa
-                banner: null, // Para armazenar a imagem de banner
-                map: null,    // Para armazenar um arquivo de mapa (se necessário)
+                cover: null,
+                banner: null,
+                map: null,
             },
-            isEdit: false // Controla se é edição ou criação
+            isEdit: false
         };
     },
     mounted() {
@@ -96,7 +96,7 @@ export default {
                     }
                 });
                 alert('Evento criado com sucesso!');
-                this.$router.push('/events/created'); // Redireciona para a lista de eventos
+                this.$router.push('/my-events'); // Redireciona para a lista de eventos
             } catch (error) {
                 console.error('Erro ao criar evento', error.response.data);
                 alert('Erro ao criar evento: ' + error.response.data.message);
@@ -104,14 +104,15 @@ export default {
         },
 
         // Atualização de um evento existente
-        async updateEvent(formData) {
+        async updateEvent() {
             const eventId = this.$route.params.id;
             try {
-                await axios.put(`/event/${eventId}`, formData);
+                await axios.put(`/event/${eventId}`, this.event);
                 alert('Evento atualizado com sucesso!');
-                this.$router.push('/events/created'); // Redireciona para a lista de eventos
+                this.$router.push('/my-events'); // Redireciona para a lista de eventos
             } catch (error) {
-                console.error('Erro ao atualizar evento', error);
+                console.error('Erro ao atualizar evento:', error);
+                console.log(error.response.data); // Mostra detalhes do erro no console
             }
         },
 

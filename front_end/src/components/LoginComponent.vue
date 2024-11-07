@@ -69,6 +69,10 @@ export default {
 
                 if (response.data.token) {
                     localStorage.setItem('token', response.data.token);
+
+                    // Configura o token no axios para as requisições subsequentes
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
+
                     this.successMessage = 'Login realizado com sucesso!';
 
                     const currentRoute = this.$route.name;
