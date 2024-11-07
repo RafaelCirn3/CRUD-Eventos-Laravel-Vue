@@ -1,28 +1,43 @@
 <template>
-    <div class="register">
-        <h1 class="text-2xl font-semibold mb-6 text-center" style="margin-bottom: 10px;">Cadastre Aqui</h1>
-        <form v-if="!isAuthenticated" @submit.prevent="registerUser">
-            <input type="text" v-model="name" placeholder="Nome" required />
-            <input type="email" v-model="email" placeholder="Email" required />
-            <input type="password" v-model="password" placeholder="Senha" required />
-            
-            <!-- Exibindo erros de validação -->
-            <div v-if="validationErrors.email" class="error">
-                <p>{{ validationErrors.email[0] }}</p>
-            </div>
-            <div v-if="validationErrors.password" class="error">
-                <p>{{ validationErrors.password[0] }}</p>
-            </div>
+    <div class="flex justify-center items-center min-h-screen bg-gray-100">
+        <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-center mb-6">Cadastre-se Aqui</h2>
 
-            <button type="submit">Cadastrar</button>
-        </form>
-        
-        <!-- Texto para redirecionar para a tela de login -->
-        <div class="text-center mt-4">
-            <p class="mt-4 text-center"> Já possui uma conta? </p>          
-            <span class="text-blue-500 cursor-pointer hover:underline font-bold" @click="redirectToLogin">
-                Ir para Login
-            </span>
+            <!-- Formulário de Registro -->
+            <form @submit.prevent="register" class="space-y-4">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+                    <input type="text" id="name" v-model="name" required
+                        class="mt-2 px-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Seu nome completo" />
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+                    <input type="email" id="email" v-model="email" required
+                        class="mt-2 px-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Seu e-mail" />
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+                    <input type="password" id="password" v-model="password" required
+                        class="mt-2 px-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Sua senha" />
+                </div>
+
+                <div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-500">
+                        Criar Conta
+                    </button>
+                </div>
+            </form>
+
+            <!-- Link para a página de Login -->
+            <p class="text-center text-sm text-gray-600 mt-4">
+                Já possui uma conta?
+                <router-link to="/login" class="text-blue-600 hover:underline">Ir para Login</router-link>
+            </p>
         </div>
     </div>
 </template>
@@ -30,95 +45,32 @@
 <script>
 import axios from 'axios';
 
-
 export default {
     data() {
         return {
             name: '',
             email: '',
-            password: '',
-            message: '',
-            isAuthenticated: false, // Variável para verificar se o usuário está autenticado
-            validationErrors: {}, // Para armazenar erros de validação
+            password: ''
         };
     },
-    created() {
-        // Verifica se o usuário já está autenticado (exemplo com token no localStorage)
-        this.isAuthenticated = localStorage.getItem('token') ? true : false;
-    },
     methods: {
-        async registerUser() {
+        async register() {
             try {
                 await axios.post('http://localhost:8000/api/register', {
                     name: this.name,
                     email: this.email,
                     password: this.password
                 });
-                this.message = 'Usuário registrado com sucesso!';
-                // Redireciona para a tela de login após o registro
-                this.$router.push('/login');
+
+                this.$router.push('/login'); // Redireciona para a tela de login
             } catch (error) {
-                // Exibir erro detalhado para depuração
-                console.error('Erro ao registrar:', error.response ? error.response.data : error.message);
-                if (error.response && error.response.data.errors) {
-                    // Atribui os erros de validação ao estado para exibir ao usuário
-                    this.validationErrors = error.response.data.errors;
-                } else {
-                    this.message = error.response ? error.response.data.message : 'Ocorreu um erro ao registrar. Tente novamente.';
-                }
+                console.error('Erro ao registrar:', error);
             }
-        },
-        redirectToLogin() {
-            this.$router.push('/login'); // Redireciona para a tela de login
         }
     }
 };
 </script>
 
-
 <style scoped>
-.register-form {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-h1 {
-    text-align: center;
-}
-
-label {
-    display: block;
-    margin: 10px 0 5px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-p {
-    color: red;
-
-}
+/* Estilos para o formulário */
 </style>

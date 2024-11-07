@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="flex flex-col min-h-screen bg-gray-100 overflow-hidden">
     <!-- Header fica no topo -->
-    <HeaderComponent />
+    <HeaderComponent v-if="shouldShowHeader" />
 
     <!-- Conteúdo principal abaixo do cabeçalho -->
     <div class="flex-1 flex justify-center items-center px-4">
@@ -31,6 +31,11 @@ export default {
     document.title = "CRUD Eventos";
   },
   computed: {
+    // Exibe o cabeçalho somente quando a rota não for Login ou Register
+    shouldShowHeader() {
+      return this.$route.name !== 'Register' && this.$route.name !== 'Login';
+    },
+    // Já existe para o botão de logoff
     shouldShowLogoutButton() {
       return this.$route.name !== 'Register' && this.$route.name !== 'Login';
     }
@@ -52,6 +57,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 /* Ajuste de estilo para que o conteúdo ocupe todo o espaço restante e o cabeçalho fique no topo */
