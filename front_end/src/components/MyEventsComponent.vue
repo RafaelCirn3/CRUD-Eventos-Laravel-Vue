@@ -5,7 +5,7 @@
             <p>Você ainda não criou nenhum evento.</p>
         </div>
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="event in events" :key="event.id" class="event-card bg-white p-6 rounded-lg shadow-md">
+            <div v-for="event in events" :key="event.id" class="event-card bg-white p-6 rounded-lg shadow-md mx-auto">
                 <h2 class="text-xl font-semibold mb-2">{{ event.name }}</h2>
                 <p class="text-gray-600 mb-4">{{ event.description }}</p>
                 <p class="text-gray-500">Data: {{ formatDate(event.date) }}</p>
@@ -19,9 +19,10 @@
                         class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600">
                         Deletar
                     </button>
-                    <router-link :to="'/event/' + event.id" class="mt-2 text-blue-500 hover:underline">
+                    <button @click="viewMore(event.id)"
+                        class="mt-4 ml-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
                         Ver Mais
-                    </router-link>
+                    </button>
                 </div>
             </div>
         </div>
@@ -30,7 +31,6 @@
 
 <script>
 import axios from 'axios';
-
 
 export default {
     data() {
@@ -68,6 +68,11 @@ export default {
         formatDate(date) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
             return new Date(date).toLocaleDateString('pt-BR', options);
+        },
+
+        // Redireciona para a página de detalhes do evento
+        viewMore(eventId) {
+            this.$router.push(`/event/${eventId}`);
         }
     }
 };
@@ -86,5 +91,19 @@ export default {
 .event-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustando o layout para centralizar */
+.grid {
+    display: grid;
+    justify-items: center;
+    /* Centraliza os itens dentro da grid */
+}
+
+/* Adicionando um pouco de espaçamento para telas menores */
+@media (max-width: 768px) {
+    .my-events-container {
+        padding: 16px;
+    }
 }
 </style>
