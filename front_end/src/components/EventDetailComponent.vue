@@ -1,14 +1,14 @@
 <template>
-    <div class="event-detail">
-        <h1>{{ event.name }}</h1>
-        <p>{{ event.description }}</p>
-        <p><strong>Data:</strong> {{ event.date }}</p>
-        <p><strong>Local:</strong> {{ event.location }}</p>
+    <div class="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg">
+        <h1 class="text-3xl font-bold mb-4">{{ event.name }}</h1>
+        <p class="text-lg mb-4">{{ event.description }}</p>
+        <p class="text-lg mb-4"><strong>Data:</strong> {{ event.date }}</p>
+        <p class="text-lg mb-4"><strong>Local:</strong> {{ event.location }}</p>
 
-        <button @click="registerForEvent" v-if="!isRegistered" class="btn-register">
+        <button @click="registerForEvent" v-if="!isRegistered" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
             Inscrever-se
         </button>
-        <p v-else>Você já está inscrito neste evento!</p>
+        <p v-else class="text-green-600 mt-4">Você já está inscrito neste evento!</p>
     </div>
 </template>
 
@@ -70,31 +70,5 @@ export default {
 </script>
 
 <style scoped>
-.event-detail {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-h1 {
-    font-size: 2em;
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-}
-
-button.btn-register {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-}
-
-button.btn-register:hover {
-    background-color: #45a049;
-}
+/* Personalize o estilo conforme necessário */
 </style>

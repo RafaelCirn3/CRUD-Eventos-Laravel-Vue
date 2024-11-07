@@ -7,7 +7,7 @@ import MyEventsComponent from './components/MyEventsComponent.vue';  // Rota par
 import SubscribedEventsComponent from './components/SubscribedEventsComponent.vue';  // Rota para eventos aos quais o usuário está inscrito
 import AvailableEventsComponent from './components/AvailableEventsComponent.vue'; // Rota para eventos disponíveis para inscrição
 
-Vue.use(Router);
+Vue.use(Router); // função de gerenciamento de Rotas
 
 export default new Router({
     mode: 'history', // Habilita o modo history para URLs limpas
@@ -39,17 +39,17 @@ export default new Router({
         {
             path: '/my-events',
             name: 'MyEvents',
-            component: MyEventsComponent,  // Exibe eventos criados pelo usuário
+            component: MyEventsComponent, 
         },
         {
             path: '/events/subscribed',
             name: 'SubscribedEvents',
-            component: SubscribedEventsComponent,  // Exibe eventos aos quais o usuário está inscrito
+            component: SubscribedEventsComponent,  
         },
         {
             path: '/events/available',
             name: 'AvailableEvents',
-            component: AvailableEventsComponent,  // Exibe eventos disponíveis para inscrição
+            component: AvailableEventsComponent, 
         }
     ]
 });
