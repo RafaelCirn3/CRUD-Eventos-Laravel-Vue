@@ -17,14 +17,14 @@
                 <p class="text-gray-500">Data: {{ formatDate(event.date) }}</p>
                 <!-- Botão Ver Mais -->
                 <button @click="viewMore(event.id)"
-                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 mb-2">
                     Ver Mais
                 </button>
 
-                <!-- Botão Desinscrever -->
+                <!-- Botão Cancelar-->
                 <button @click="unsubscribe(event.id)"
-                    class="mt-2 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-200">
-                    Desinscrever
+                    class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-200">
+                    Cancelar
                 </button>
             </div>
         </div>

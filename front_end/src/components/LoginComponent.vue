@@ -82,7 +82,7 @@ export default {
                         icon: 'success',
                         confirmButtonText: 'Ok'
                     }).then(() => {
-                        this.$router.push('/events/available'); // Redireciona para a página de eventos
+                       this.$router.push('/events/available'); // Redireciona para a página de eventos
                     });
                 }
             } catch (error) {

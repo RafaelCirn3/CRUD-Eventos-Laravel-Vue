@@ -101,7 +101,7 @@ export default {
                     }
                 });
                 this.showSuccess('Evento criado com sucesso!');
-                this.$router.push('/my-events');
+                await this.$router.push('/my-events');
             } catch (error) {
                 console.error('Erro ao criar evento', error.response.data);
                 this.showError('Erro ao criar evento: ' + error.response.data.message);
