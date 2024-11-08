@@ -1,0 +1,99 @@
+# Exemplo de requisição cURL para cada URL fornecida
+
+# 1. Rota de Usuario (obter o ID do usuário logado)
+curl --request GET \
+  --url http://127.0.0.1:8000/api/user-id \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
+
+# 2. Rota de Login
+curl --request POST \
+  --url http://127.0.0.1:8000/api/login \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1' \
+  --data '{
+	"email": "teste@teste.com", 
+	"password": "senhaTeste"
+}'
+
+# 3. Rota de Registro
+curl --request POST \
+  --url http://127.0.0.1:8000/api/register \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1' \
+  --data '{
+	"name": "Novo Usuario",
+	"email": "novo@usuario.com",
+	"password": "senhaSegura"
+}'
+
+# 4. Logout
+curl --request POST \
+  --url http://127.0.0.1:8000/api/logout \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
+
+# 5. Inscrição em evento
+curl --request POST \
+  --url http://127.0.0.1:8000/api/event/1/subscribe \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
+
+# 6. Cancelar inscrição em evento
+curl --request POST \
+  --url http://127.0.0.1:8000/api/event/1/unsubscribe \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
+
+# 7. Eventos criados pelo usuário logado
+curl --request GET \
+  --url http://127.0.0.1:8000/api/my-events \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
+
+# 8. Eventos no qual o usuário está inscrito
+curl --request GET \
+  --url http://127.0.0.1:8000/api/subscribed-event \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
+
+# 9. Detalhes do Evento
+curl --request GET \
+  --url http://127.0.0.1:8000/api/event/1 \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
+
+# 10. Verifica se o usuário está registrado no evento
+curl --request GET \
+  --url http://127.0.0.1:8000/api/event/1/is-registered \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
+
+# 11. Obter lista de usuários inscritos em um evento específico
+curl --request GET \
+  --url http://127.0.0.1:8000/api/event/1/subscribed-users \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
+
+# 12. Evento disponível para inscrição
+curl --request GET \
+  --url http://127.0.0.1:8000/api/available-event \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
+
+# 13. API Resource para eventos (CRUD completo para eventos)
+curl --request GET \
+  --url http://127.0.0.1:8000/api/event \
+  --header 'Authorization: Bearer 7|xOx4XW8HuGQgfw9PCn5ckGUihGqUZ0sMDPI0HYZ4086a719b' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/10.1.1'
