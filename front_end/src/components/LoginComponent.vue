@@ -48,6 +48,8 @@
 </template>
 
 <script>
+// Importando SweetAlert2
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default {
@@ -73,17 +75,24 @@ export default {
                     // Configura o token no axios para as requisições subsequentes
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
 
-                    this.successMessage = 'Login realizado com sucesso!';
-
-                    const currentRoute = this.$route.name;
-                    const targetRoute = 'events';  // Nome da rota de destino
-
-                    if (currentRoute !== targetRoute) {
-                        this.$router.push('/events/create'); // Redireciona para a página de eventos
-                    }
+                    // Exibe um SweetAlert de sucesso
+                    Swal.fire({
+                        title: 'Login realizado!',
+                        text: 'Você está logado com sucesso.',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then(() => {
+                        this.$router.push('/events/available'); // Redireciona para a página de eventos
+                    });
                 }
             } catch (error) {
-                this.errorMessage = 'Erro ao tentar fazer login. Verifique suas credenciais e tente novamente.';
+                // Exibe um SweetAlert de erro
+                Swal.fire({
+                    title: 'Erro ao tentar fazer login!',
+                    text: 'Verifique suas credenciais e tente novamente.',
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
             }
         }
     }

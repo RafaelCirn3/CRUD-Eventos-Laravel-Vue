@@ -32,6 +32,8 @@
 </template>
 
 <script>
+// Importa o SweetAlert2
+import Swal from 'sweetalert2';
 import axios from 'axios';
 import EventFilter from './EventFilter.vue';
 
@@ -74,15 +76,38 @@ export default {
             }
         },
         async unsubscribe(eventId) {
-            try {
-                await axios.post(`http://localhost:8000/api/event/${eventId}/unsubscribe`, {}, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-                });
-                alert('Você foi desinscrito com sucesso do evento!');
-                this.fetchEvents(); // Atualiza a lista de eventos inscritos
-            } catch (error) {
-                console.error('Erro ao desinscrever-se do evento', error);
-                alert('Não foi possível desinscrever-se deste evento.');
+            // Exibe o SweetAlert para confirmar a desinscrição
+            const result = await Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Você deseja se desinscrever deste evento?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, desinscrever!'
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    await axios.post(`http://localhost:8000/api/event/${eventId}/unsubscribe`, {}, {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    });
+                    // Exibe um alerta de sucesso após desinscrição
+                    Swal.fire(
+                        'Desinscrito!',
+                        'Você foi desinscrito com sucesso do evento.',
+                        'success'
+                    );
+                    this.fetchEvents(); // Atualiza a lista de eventos inscritos
+                } catch (error) {
+                    console.error('Erro ao desinscrever-se do evento', error);
+                    // Exibe um alerta de erro caso algo dê errado
+                    Swal.fire(
+                        'Erro!',
+                        'Não foi possível desinscrever-se deste evento.',
+                        'error'
+                    );
+                }
             }
         },
         // Redireciona para a página de detalhes do evento

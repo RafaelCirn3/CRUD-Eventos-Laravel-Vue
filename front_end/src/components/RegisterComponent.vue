@@ -43,6 +43,8 @@
 </template>
 
 <script>
+// Importando SweetAlert2
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default {
@@ -62,9 +64,23 @@ export default {
                     password: this.password
                 });
 
-                this.$router.push('/login'); // Redireciona para a tela de login
+                // Exibe um SweetAlert de sucesso
+                Swal.fire({
+                    title: 'Cadastro realizado!',
+                    text: 'Agora você pode fazer login.',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                }).then(() => {
+                    this.$router.push('/login'); // Redireciona para a tela de login
+                });
             } catch (error) {
-                console.error('Erro ao registrar:', error);
+                // Exibe um SweetAlert de erro
+                Swal.fire({
+                    title: 'Erro ao registrar!',
+                    text: 'Ocorreu um erro ao tentar registrar sua conta. Tente novamente.',
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
             }
         }
     }

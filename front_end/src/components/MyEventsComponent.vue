@@ -30,6 +30,8 @@
 </template>
 
 <script>
+// Importa o SweetAlert2
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 export default {
@@ -42,29 +44,56 @@ export default {
         this.fetchMyEvents();
     },
     methods: {
+        // Busca os eventos criados pelo usuário
         async fetchMyEvents() {
             try {
-                const response = await axios.get('/my-events'); // Rota para eventos criados pelo usuário
+                const response = await axios.get('/my-events');
                 this.events = response.data;
             } catch (error) {
                 console.error('Erro ao buscar meus eventos', error);
             }
         },
+
+        // Função para deletar o evento com SweetAlert2
         async deleteEvent(eventId) {
-            if (confirm("Tem certeza que deseja deletar este evento?")) {
+            const result = await Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Você não poderá reverter isso!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, deletar!'
+            });
+
+            if (result.isConfirmed) {
                 try {
                     await axios.delete(`/event/${eventId}`);
-                    alert('Evento deletado com sucesso!');
+                    // Exibe um alerta de sucesso após deletar o evento
+                    Swal.fire(
+                        'Deletado!',
+                        'O evento foi deletado com sucesso.',
+                        'success'
+                    );
                     this.fetchMyEvents(); // Atualiza a lista de eventos
                 } catch (error) {
                     console.error('Erro ao deletar evento', error);
+                    // Exibe um alerta de erro caso algo dê errado
+                    Swal.fire(
+                        'Erro!',
+                        'Ocorreu um erro ao tentar deletar o evento.',
+                        'error'
+                    );
                 }
             }
         },
+
+        // Função para redirecionar para a página de edição do evento
         editEvent(eventId) {
-            // Redireciona para a página de edição, passando o id do evento
             this.$router.push({ name: 'EditEvent', params: { id: eventId } });
         },
+
+        // Função para formatar a data
         formatDate(date) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
             return new Date(date).toLocaleDateString('pt-BR', options);

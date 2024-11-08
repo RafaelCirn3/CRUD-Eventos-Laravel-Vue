@@ -4,7 +4,7 @@
         <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
             <div class="flex flex-wrap items-center gap-6">
                 <!-- Coluna de Detalhes do Evento -->
-                <div class="flex-1">
+                <div class="flex-1" v-if="event">
                     <h1 class="text-2xl font-bold mb-4 text-gray-800">{{ event.name }}</h1>
                     <p class="text-lg text-gray-600 mb-4">{{ event.description }}</p>
 
@@ -84,8 +84,10 @@
         </div>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2'; // Importando SweetAlert2
 
 export default {
     data() {
@@ -110,6 +112,7 @@ export default {
 
                 if (!this.event) {
                     console.error("Evento não encontrado.");
+                    this.showError('Evento não encontrado!');
                     return;
                 }
 
@@ -123,6 +126,7 @@ export default {
                 }
             } catch (error) {
                 console.error('Erro ao buscar detalhes do evento:', error);
+                this.showError('Erro ao buscar detalhes do evento!');
             }
         },
         async getLoggedUserId() {
@@ -136,10 +140,31 @@ export default {
         },
         goBack() {
             this.$router.go(-1); // Voltar para a página anterior
+        },
+
+        // Função para exibir mensagem de sucesso
+        showSuccess(message) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: message,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        },
+
+        // Função para exibir mensagem de erro
+        showError(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+            });
         }
     }
 }
 </script>
+
 <style scoped>
 .event-detail {
     padding: 16px;

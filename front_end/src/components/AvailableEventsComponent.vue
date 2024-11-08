@@ -35,7 +35,8 @@
 </template>
 
 <script>
-// Importa o EventFilter
+// Importa o SweetAlert2
+import Swal from 'sweetalert2';
 import EventFilter from './EventFilter.vue';
 import axios from 'axios';
 
@@ -56,22 +57,22 @@ export default {
     computed: {
         // Filtra os eventos disponíveis com base nos filtros e na inscrição
         filteredEvents() {
-        return this.events.filter(event => {
-            // Filtra os eventos com base nos filtros
-            const matchesName = this.filters.name
-                ? event.name.toLowerCase().includes(this.filters.name.toLowerCase())
-                : true;
+            return this.events.filter(event => {
+                // Filtra os eventos com base nos filtros
+                const matchesName = this.filters.name
+                    ? event.name.toLowerCase().includes(this.filters.name.toLowerCase())
+                    : true;
 
-            // Converte a data para o formato 'yyyy-mm-dd' para comparação
-            const eventDate = new Date(event.date).toISOString().split('T')[0];
-            const filterDate = this.filters.date;
+                // Converte a data para o formato 'yyyy-mm-dd' para comparação
+                const eventDate = new Date(event.date).toISOString().split('T')[0];
+                const filterDate = this.filters.date;
 
-            const matchesDate = filterDate ? eventDate === filterDate : true;
-            const isNotSubscribed = !this.isSubscribed(event.id);
+                const matchesDate = filterDate ? eventDate === filterDate : true;
+                const isNotSubscribed = !this.isSubscribed(event.id);
 
-            return matchesName && matchesDate && isNotSubscribed;
-        });
-    }
+                return matchesName && matchesDate && isNotSubscribed;
+            });
+        }
     },
     mounted() {
         this.fetchAvailableEvents();
@@ -114,12 +115,32 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
                 });
-                alert('Inscrição realizada com sucesso!');
+
+                // Exibe o alerta de sucesso utilizando o SweetAlert2
+                Swal.fire({
+                    title: 'Inscrição realizada com sucesso!',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    background: '#f8f9fa',
+                    color: '#333',
+                    confirmButtonColor: '#007bff'
+                });
+
                 this.fetchAvailableEvents();
                 this.fetchSubscribedEvents();
             } catch (error) {
                 console.error('Erro ao inscrever-se no evento', error);
-                alert('Não foi possível se inscrever neste evento.');
+
+                // Exibe o alerta de erro utilizando o SweetAlert2
+                Swal.fire({
+                    title: 'Erro!',
+                    text: 'Não foi possível se inscrever neste evento.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    background: '#f8f9fa',
+                    color: '#333',
+                    confirmButtonColor: '#dc3545'
+                });
             }
         },
 
