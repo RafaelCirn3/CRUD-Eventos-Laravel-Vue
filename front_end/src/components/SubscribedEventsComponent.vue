@@ -1,82 +1,119 @@
 <template>
-    <div class="p-4 max-w-4xl mx-auto">
-        <h2 class="text-3xl font-semibold mb-6 text-center">Eventos Inscritos</h2>
-        
-        <!-- Caso o usuário não esteja inscrito em nenhum evento -->
-        <div v-if="events.length === 0" class="text-center">
-            <p class="text-lg text-gray-600">Você não está inscrito em nenhum evento.</p>
+    <div class="subscribed-events-container px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center">Eventos Inscritos</h1>
+
+        <!-- Componente de Filtro -->
+        <EventFilter :currentFilters="filters" @update-filters="updateFilters" />
+
+        <!-- Lista de Eventos Inscritos -->
+        <div v-if="filteredEvents.length === 0" class="text-center text-gray-500">
+            <p>Nenhum evento encontrado.</p>
         </div>
-        
-        <!-- Lista de eventos em que o usuário está inscrito -->
-        <div v-else>
-            <ul class="space-y-4">
-                <li v-for="event in events" :key="event.id" class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                    <h3 class="text-xl font-bold text-gray-800">{{ event.name }}</h3>
-                    <p class="text-gray-600 mt-2">{{ event.description }}</p>
-                    <p class="text-gray-500 mt-2">{{ new Date(event.date).toLocaleDateString() }}</p>
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div v-for="event in filteredEvents" :key="event.id"
+                class="event-card bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <h2 class="text-xl font-semibold mb-2">{{ event.name }}</h2>
+                <p class="text-gray-600 mb-4">{{ event.description }}</p>
+                <p class="text-gray-500">Data: {{ formatDate(event.date) }}</p>
+                <!-- Botão Ver Mais -->
+                <button @click="viewMore(event.id)"
+                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200">
+                    Ver Mais
+                </button>
 
-                    <!-- Botão para cancelar inscrição -->
-                    <button 
-                        @click="unsubscribe(event.id)" 
-                        class="mt-4 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-200"
-                    >
-                        Cancelar Inscrição
-                    </button>
-
-                    <!-- Botão de "Ver Mais" dentro do card, que redireciona para a página de detalhes do evento -->
-                    <button 
-                        @click="viewMore(event.id)" 
-                        class="mt-4 ml-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
-                    >
-                        Ver Mais
-                    </button>
-                </li>
-            </ul>
+                <!-- Botão Desinscrever -->
+                <button @click="unsubscribe(event.id)"
+                    class="mt-2 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-200">
+                    Desinscrever
+                </button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+import EventFilter from './EventFilter.vue';
+
 export default {
+    components: {
+        EventFilter
+    },
     data() {
         return {
             events: [],
+            filters: {
+                name: '',
+                date: '',
+                status: ''
+            },
         };
     },
+    computed: {
+        filteredEvents() {
+            return this.events.filter(event => {
+                const matchesName = event.name.toLowerCase().includes(this.filters.name.toLowerCase());
+                const matchesDate = this.filters.date ? event.date === this.filters.date : true;
+                const matchesStatus = this.filters.status ? event.status === this.filters.status : true;
+                return matchesName && matchesDate && matchesStatus;
+            });
+        }
+    },
     mounted() {
-        this.fetchSubscribedEvents();
+        this.fetchEvents();
     },
     methods: {
-        // Busca os eventos inscritos do usuário
-        async fetchSubscribedEvents() {
+        async fetchEvents() {
             try {
-                const { data } = await this.$axios.get('/subscribed-event');
-                this.events = data;
+                const response = await axios.get('http://localhost:8000/api/subscribed-event', {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                });
+                this.events = response.data;
             } catch (error) {
                 console.error('Erro ao buscar eventos inscritos', error);
             }
         },
-
-        // Cancelar a inscrição no evento
         async unsubscribe(eventId) {
             try {
-                await this.$axios.post(`event/${eventId}/unsubscribe`);
-                alert('Inscrição cancelada com sucesso!');
-                this.fetchSubscribedEvents(); // Atualiza a lista de eventos inscritos
+                await axios.post(`http://localhost:8000/api/event/${eventId}/unsubscribe`, {}, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                });
+                alert('Você foi desinscrito com sucesso do evento!');
+                this.fetchEvents(); // Atualiza a lista de eventos inscritos
             } catch (error) {
-                console.error('Erro ao cancelar inscrição', error);
-                alert('Não foi possível cancelar a inscrição neste evento.');
+                console.error('Erro ao desinscrever-se do evento', error);
+                alert('Não foi possível desinscrever-se deste evento.');
             }
         },
-
         // Redireciona para a página de detalhes do evento
         viewMore(eventId) {
             this.$router.push(`/event/${eventId}`);
+        },
+        updateFilters(newFilters) {
+            this.filters = newFilters; // Atualiza os filtros
+        },
+        formatDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(date).toLocaleDateString('pt-BR', options);
         }
-    },
+    }
 };
 </script>
 
 <style scoped>
-/* Adicione mais estilos se necessário, mas a estilização principal já está no Tailwind CSS */
+.event-card {
+    transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+    transform: scale(1.05);
+}
+
+button {
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #4b79ff;
+}
 </style>
