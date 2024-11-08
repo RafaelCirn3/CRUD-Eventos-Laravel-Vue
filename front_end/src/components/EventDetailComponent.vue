@@ -145,8 +145,8 @@ export default {
         async getLoggedUserId() {
             // Requisição para pegar o ID do usuário logado
             try {
-                const response = await axios.get('http://localhost:8000/api/user/me');
-                this.loggedUserId = response.data.id;
+                const response = await axios.get('http://localhost:8000/api/user-id/');
+                this.loggedUserId = response.data.user_id;
             } catch (error) {
                 console.error('Erro ao buscar ID do usuário logado:', error);
             }
