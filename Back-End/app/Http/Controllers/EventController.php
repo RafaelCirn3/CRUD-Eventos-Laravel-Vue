@@ -83,25 +83,26 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Event $event)
-{
-    // Verifica se o usuário autenticado é o criador do evento
-    if ($event->user_id !== Auth::id()) {
-        return response()->json(['error' => 'Unauthorized'], 403);
+    {
+        // Verifica se o usuário autenticado é o criador do evento
+        if ($event->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+    
+        // Validação dos dados, com cada campo sendo opcional
+        $data = $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|nullable|string',
+            'cover_image' => 'sometimes|nullable|image',
+            'banner_image' => 'sometimes|nullable|image',
+            'date' => 'sometimes|required|date',
+        ]);
+    
+        // Preenche o evento com os dados recebidos
+        $event->fill($data)->save();
+    
+        return response()->json($event, 200);
     }
-
-    // Valida os dados
-    $data = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'required|string',
-        'cover_image' => 'nullable|image',
-        'banner_image' => 'nullable|image',
-        'date' => 'required|date',
-    ]);
-
-    // Atualiza o evento
-    $event->update($data);
-    return response()->json($event, 200);
-}
 
     public function destroy($id)
 {
