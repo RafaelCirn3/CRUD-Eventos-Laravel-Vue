@@ -3,7 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
-
+// Rota de Usuario
+Route::middleware('auth:sanctum')->get('/user-id', [AuthController::class, 'get_user_id']);
 // Rota de Login
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
@@ -30,6 +31,8 @@ Route::middleware('auth:sanctum')->get('/event/{id}', [EventController::class, '
 // Verifica se o usuario é registrado
 Route::middleware('auth:sanctum')->get('/event/{id}/is-registered', [EventController::class, 'checkRegistrationStatus']);
 
+// Rota para obter a lista de usuários inscritos em um evento específico
+Route::middleware('auth:sanctum')->get('/event/{id}/subscribed-users', [EventController::class, 'subscribedUsers']);
 // Rotas protegidas com autenticação (necessário token)
 Route::middleware('auth:sanctum')->group(function () {
     // Evento disponível para inscrição

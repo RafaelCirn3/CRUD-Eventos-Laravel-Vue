@@ -84,65 +84,62 @@
         </div>
     </div>
 </template>
-
 <script>
 import axios from 'axios';
 
 export default {
     data() {
         return {
-            event: null, // Armazena os detalhes do evento
-            subscribedUsers: [], // Armazena os usuários inscritos no evento
-            isEventOwner: false, // Verifica se o usuário é o dono do evento
-            loggedUserEmail: '', // Email do usuário logado
+            event: null, // Detalhes do evento
+            subscribedUsers: [], // Usuários inscritos
+            isEventOwner: false, // Verificar se é o dono do evento
+            loggedUserId: null, // ID do usuário logado
         };
     },
     mounted() {
         this.fetchEventDetails();
-        this.getLoggedUserEmail();
+        this.getLoggedUserId();
     },
     methods: {
         async fetchEventDetails() {
-            const eventId = this.$route.params.id; // Assume que o ID do evento está na URL
+            const eventId = this.$route.params.id; // Obtemos o ID do evento da URL
             try {
-                // Fazendo requisição para detalhes do evento
+                // Requisição para obter detalhes do evento
                 const response = await axios.get(`http://localhost:8000/api/event/${eventId}`);
                 this.event = response.data;
 
-                // Verificando se o evento foi encontrado e possui os dados necessários
                 if (!this.event) {
                     console.error("Evento não encontrado.");
                     return;
                 }
 
-                // Fazendo requisição para obter os usuários inscritos no evento
+                // Requisição para obter usuários inscritos no evento
                 const usersResponse = await axios.get(`http://localhost:8000/api/event/${eventId}/subscribed-users`);
                 this.subscribedUsers = usersResponse.data;
 
-                // Verificando se o usuário logado é o dono do evento com base no campo `event_owner`
-                if (this.event.event_owner === this.loggedUserEmail) {
-                    this.isEventOwner = true; // O usuário é o dono do evento
+                // Verifica se o usuário logado é o dono do evento
+                if (this.event.user_id === this.loggedUserId) {
+                    this.isEventOwner = true; // O usuário logado é o dono
                 }
             } catch (error) {
                 console.error('Erro ao buscar detalhes do evento:', error);
             }
         },
-        async getLoggedUserEmail() {
+        async getLoggedUserId() {
             try {
-                // Aqui você deve obter o email do usuário logado via autenticação (Exemplo: via token)
-                const response = await axios.get('http://localhost:8000/api/user'); // Ajuste conforme sua rota
-                this.loggedUserEmail = response.data.email; // Supondo que o API retorne o email do usuário
+                // Requisição para obter o ID do usuário logado
+                const response = await axios.get('http://localhost:8000/api/user-id');
+                this.loggedUserId = response.data.user_id; // Armazena o ID do usuário logado
             } catch (error) {
-                console.error('Erro ao buscar o email do usuário logado:', error);
+                console.error('Erro ao obter o ID do usuário logado:', error);
             }
         },
         goBack() {
-            this.$router.go(-1); // Volta para a página anterior
+            this.$router.go(-1); // Voltar para a página anterior
         }
-    },
-};
+    }
+}
 </script>
-
 <style scoped>
 .event-detail {
     padding: 16px;
@@ -153,6 +150,7 @@ export default {
     .event-detail .flex {
         flex-direction: column;
     }
+
     .event-detail .flex-1 {
         width: 100%;
     }

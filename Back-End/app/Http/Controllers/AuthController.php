@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -43,11 +44,20 @@ class AuthController extends Controller
         return response()->json(['token' => $token]);
     }
     public function logout(Request $request)
-{
-    Auth::user()->tokens->each(function ($token) {
-        $token->delete(); // Remove todos os tokens do usuário
-    });
+    {
+        Auth::user()->tokens->each(function ($token) {
+            $token->delete(); // Remove todos os tokens do usuário
+        });
 
-    return response()->json(['message' => 'Logged out successfully']);
-}
+        return response()->json(['message' => 'Logged out successfully']);
+    }
+    public function get_user_id(Request $request)
+    {
+        // Verificando se o usuário está autenticado
+        if (Auth::check()) {
+            return response()->json(['user_id' => Auth::user()->id]);
+        } else {
+            return response()->json(['error' => 'Usuário não autenticado'], 401);
+        }
+    }
 }
