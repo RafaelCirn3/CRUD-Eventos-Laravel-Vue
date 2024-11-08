@@ -1,92 +1,113 @@
-# CRUD de Eventos com Laravel e Vue.js
 
-## Descrição do Projeto
+# Desafio para Processo Seletivo - Laravel + Vue.js
 
-Este projeto é uma aplicação de gerenciamento de eventos construída com o framework Laravel para o back-end e Vue.js para o front-end. A aplicação permite que os usuários realizem operações CRUD (Criar, Ler, Atualizar, Deletar) em eventos, proporcionando uma interface simples e intuitiva para interação.
-
-### Funcionalidades
-
-- **Cadastro de Eventos**: Usuários autenticados podem criar novos eventos, fornecendo informações como nome, descrição, data e imagens.
-- **Listagem de Eventos**: A aplicação exibe uma lista de eventos cadastrados, permitindo que os usuários visualizem detalhes de cada evento.
-- **Atualização de Eventos**: Usuários podem editar as informações de eventos existentes.
-- **Remoção de Eventos**: Possibilidade de deletar eventos que não são mais necessários.
-- **Autenticação de Usuários**: Implementação de autenticação usando Laravel Sanctum, permitindo que apenas usuários autenticados realizem operações no CRUD.
+Este projeto foi desenvolvido como parte do processo seletivo para a vaga de desenvolvedor Laravel + Vue.js.
 
 ## Tecnologias Utilizadas
 
-- **Back-end**: Laravel 9.x
-- **Front-end**: Vue.js 3.x
-- **Banco de Dados**: MySQL ou SQLite
-- **Autenticação**: Laravel Sanctum
-- **Gerenciamento de Pacotes**: Composer e NPM
+### Back-End:
+- **Laravel**: Framework PHP para o desenvolvimento da API Restful, com rotas, controllers e autenticação.
+- **Laravel Sanctum**: Utilizado para autenticação de APIs com tokens de sessão, permitindo a criação de usuários, login e validação de permissões de acesso às rotas protegidas.
+- **MySQL**: Banco de dados utilizado para persistência de dados.
 
-## Pré-requisitos
+### Front-End:
+- **Vue.js (v2)**: Framework JavaScript para construção do front-end interativo e reativo, usando componentes para gerenciar a UI e a lógica de interação com a API.
+- **Vue Router**: Utilizado para navegação entre as páginas do aplicativo.
+- **Axios**: Biblioteca para realizar requisições HTTP entre o front-end e o back-end.
+- **Tailwind CSS**: Framework CSS utilitário para estilização rápida e responsiva.
 
-Antes de executar o projeto, certifique-se de ter as seguintes ferramentas instaladas:
+## Funcionalidades
 
-- [PHP](https://www.php.net/downloads) (>= 8.0)
-- [Composer](https://getcomposer.org/download/)
-- [Node.js](https://nodejs.org/en/download/)
-- [NPM](https://www.npmjs.com/get-npm)
+- **Cadastro e Login**: Sistema de autenticação com Laravel Sanctum.
+- **CRUD de Eventos**: Criação, listagem, detalhamento, edição e cancelamento de eventos.
+- **Filtros de Eventos**: Filtro por nome, data e status de eventos.
+- **Subscrição em Eventos**: Usuários podem se inscrever e desinscrever de eventos.
+- **Interface de Administração**: Apenas o dono do evento pode visualizar os inscritos.
+- **Exibição de Detalhes de Evento**: Mostra informações detalhadas de eventos, incluindo imagens (mapa, capa, banner).
 
-## Como Utilizar
+## Como Rodar o Projeto
 
-### 1. Clonar o Repositório
+### 1. Clonando o Repositório
 
-Clone este repositório em sua máquina local usando o seguinte comando:
+Clone o repositório com os seguintes comandos:
 
 ```bash
 git clone https://github.com/RafaelCirn3/CRUD-Eventos-Laravel-Vue
-cd CRUD
+cd CRUD-Eventos-Laravel-Vue
 ```
-### 2. Instalar Dependências do Back-end
-Navegue até o diretório do projeto e instale as dependências do Laravel:
-```bash
-composer install
-```
-### 3. Configurar o Banco de Dados
-Crie um banco de dados e configure o arquivo .env na raiz do projeto para refletir suas credenciais do banco de dados:
-```dotenv
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=nome_do_banco
-DB_USERNAME=seu_usuario
-DB_PASSWORD=sua_senha
-```
-### 4. Migrations e Seeders
-Execute as migrations para criar as tabelas no banco de dados:
-```bash
-php artisan migrate
-```
-Se você tiver seeders para popular o banco de dados, execute:
-```bash
-php artisan db:seed
-```` 
-### 5. Instalar Dependências do Front-end
-Navegue até o diretório do front-end (se estiver separado) e instale as dependências do Vue.js:
 
-```bash
-npm install
-```
-6. Compilar Assets
-Compile os assets do front-end:
+### 2. Configurando o Back-End
 
-bash
-Copiar código
-npm run dev
-### 7. Executar o Servidor
-Inicie o servidor do Laravel:
-```bash
-php artisan serve
-````
-A aplicação estará disponível em http://127.0.0.1:8000.
+1. **Acesse a pasta do back-end**:
+   ```bash
+   cd back-end
+   ```
 
-### 8. Acessar a Aplicação
-Abra o seu navegador e vá para http://127.0.0.1:8000 para acessar a interface da aplicação.
+2. **Instale as dependências do Laravel**:
+   ```bash
+   composer install
+   ```
 
-### 9. Testar a Autenticação
-Para realizar operações no CRUD, é necessário fazer login. Use a rota /api/register para se registrar e em seguida /api/login para obter um token. Insira este token no cabeçalho das requisições para acessar as rotas protegidas.
+3. **Crie um arquivo `.env` com as variáveis de ambiente**:
+   Copie o arquivo `.env.example` para `.env` e configure as variáveis, como banco de dados, chave de app, etc.
 
-## Contribuição
-Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request.
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Gere a chave de aplicação do Laravel**:
+   ```bash
+   php artisan key:generate
+   ```
+
+5. **Migre o banco de dados**:
+   ```bash
+   php artisan migrate
+   ```
+
+6. **Rodando o servidor**:
+   Inicie o servidor do back-end:
+   ```bash
+   php artisan serve
+   ```
+
+   O servidor estará disponível em `http://localhost:8000`.
+
+### 3. Configurando o Front-End
+
+1. **Acesse a pasta do front-end**:
+   ```bash
+   cd front_end
+   ```
+
+2. **Instale as dependências do Vue.js**:
+   ```bash
+   npm install
+   ```
+
+3. **Configuração do Axios**:
+   Certifique-se de que o Axios está apontando para a URL do back-end (geralmente `http://localhost:8000`).
+
+4. **Rodando o servidor do front-end**:
+   Inicie o servidor do Vue.js:
+   ```bash
+   npm run serve
+   ```
+
+   O servidor estará disponível em `http://localhost:8080`.
+
+### 4. Testando a Aplicação
+
+1. **Acesse o Front-End** em `http://localhost:8080` e utilize as funcionalidades de cadastro, login, inscrição em eventos e visualização de detalhes de eventos.
+2. **Acesse a API** em `http://localhost:8000/api` para verificar as rotas e interações com o back-end.
+
+## Observações
+
+- Este projeto foi desenvolvido com foco em uma aplicação completa utilizando **Laravel** no back-end e **Vue.js** no front-end.
+- A autenticação é gerida por **Laravel Sanctum** para permitir o login de usuários e proteção de rotas sensíveis.
+- O front-end foi estilizado utilizando **Tailwind CSS** para garantir uma interface limpa e responsiva.
+
+## Fontes
+- https://sweetalert2.github.io
+- https://laravel.com/docs/11.x
+- https://vuejs.org/guide/introduction.html
