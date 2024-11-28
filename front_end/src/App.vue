@@ -7,15 +7,6 @@
     <div class="flex-1 flex justify-center items-center px-4">
       <router-view></router-view> <!-- Renderiza as rotas aqui -->
     </div>
-
-    <!-- Botão de logoff abaixo do conteúdo principal -->
-    <div v-if="shouldShowLogoutButton" class="mt-auto mb-4 flex justify-center">
-      <button 
-        @click="logout" 
-        class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-200">
-        Logoff
-      </button>
-    </div>
   </div>
 </template>
 
@@ -80,11 +71,6 @@ html, body, #app {
   justify-content: center;
   align-items: center;
   padding: 16px;
-}
-
-/* Ajusta o botão de logoff para aparecer abaixo do conteúdo, centralizado e pequeno */
-.mt-auto {
-  margin-top: auto; /* Empurra o botão para baixo */
 }
 
 button {
